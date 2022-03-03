@@ -1,4 +1,5 @@
 "use strict"
+//nope
 
 let book = {}; //oggetto vuoto
 console.log(book);

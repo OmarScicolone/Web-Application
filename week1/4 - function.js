@@ -12,4 +12,4 @@ const helloTom = greeter("Tom");
 const helloJerry = greeter("Jerry");
 console.log(helloTom());
 console.log(helloJerry());
-//siium
+//s
