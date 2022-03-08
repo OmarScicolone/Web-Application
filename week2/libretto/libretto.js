@@ -9,7 +9,7 @@ console.log(now.format());
 let libretto = [];
 
 let esame = {nome: "AW1", voto:30, data: dayjs('2022-03-03')};
-console.log(esame);
+//console.log(esame);
 
 function Exam(code, nome, CFU, voto, lode, data){
    this.nome = nome;
