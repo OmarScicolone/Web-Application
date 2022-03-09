@@ -31,7 +31,7 @@ function ExamList(){
    this.average = () => {
       let avg = 0;
       for (const val of this.list)
-         avg += val.voto;
+         avg += val.voto; //..
       avg = avg / this.list.length;
       return avg;
    }
