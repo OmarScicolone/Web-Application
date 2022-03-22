@@ -35,9 +35,6 @@ function ExamList(){
       avg = avg / this.list.length;
       return avg;
    }
-
-   
-   
 }
 
 const exams = new ExamList();
