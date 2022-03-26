@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Foga's Films</title>
+
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+   <link rel=stylesheet type="text/css" href="style.css">
+
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+   <div class="container-fluid">
+      <div class="row">
+         <nav class="navbar navbar-light" style="background-color: skyblue;">
+            <div class=" col-4">
+               <a class="navbar-brand" href="#">
+                  <i class="bi bi-film"></i>
+                  Foga's Films
+               </a>
+            </div>
+            <div class="col-4">
+               <form class="d-flex">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+               </form>
+            </div>
+            <div class="col-4">
+               <div class="d-flex justify-content-end">
+                  <i class="bi bi-cpu"></i>
+               </div>
+            </div>
+         </nav>
+      </div>
+      <div class="row mt-3">
+         <div class="col-4 bg-light">
+            <ul class="nav nav-pills flex-column mb-auto">
+               <li class="nav-item">
+                  <a href="#" class="nav-link active" aria-current="page">
+                     <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#home"></use>
+                     </svg>
+                     All
+                  </a>
+               </li>
+               <li>
+                  <a href="#" class="nav-link text-dark">
+                     <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#speedometer2"></use>
+                     </svg>
+                     Favorites
+                  </a>
+               </li>
+               <li>
+                  <a href="#" class="nav-link text-dark">
+                     <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#table"></use>
+                     </svg>
+                     Best Rates
+                  </a>
+               </li>
+               <li>
+                  <a href="#" class="nav-link text-dark">
+                     <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#grid"></use>
+                     </svg>
+                     Unseen
+                  </a>
+               </li>
+               <li>
+                  <a href="#" class="nav-link text-dark">
+                     <svg class="bi me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                     </svg>
+                     Seen Last Month
+                  </a>
+               </li>
+            </ul>
+         </div>
+         <div class="col-8">
+            <h1>All</h1>
+            <table class="table">
+               <tr>
+                  <th>Title</th>
+                  <th>Favorite</th>
+                  <th>Date</th>
+                  <th>Rating</th>
+               </tr>
+               <tr>
+                  <td>Pulp Fiction</td>
+                  <td>
+                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                           Favorite
+                        </label>
+                     </div>
+                  </td>
+                  <td>March 16, 2022</td>
+                  <td>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star"></i>
+                  </td>
+               </tr>
+               <tr>
+                  <td>21 Grams</td>
+                  <td>
+                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                           Favorite
+                        </label>
+                     </div>
+                  </td>
+                  <td>March 18, 2022</td>
+                  <td>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                  </td>
+               </tr>
+               <tr>
+                  <td>Star Wars</td>
+                  <td>
+                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                           Favorite
+                        </label>
+                     </div>
+                  </td>
+                  <td></td>
+                  <td>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                  </td>
+               </tr>
+               <tr>
+                  <td>Matrix</td>
+                  <td>
+                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                           Favorite
+                        </label>
+                     </div>
+                  </td>
+                  <td></td>
+                  <td>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                     <i class="bi bi-star"></i>
+                  </td>
+               </tr>
+               <tr>
+                  <td>Shrek</td>
+                  <td>
+                     <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                           Favorite
+                        </label>
+                     </div>
+                  </td>
+                  <td>March 21, 2022</td>
+                  <td>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-fill"></i>
+                     <i class="bi bi-star-half"></i>
+                  </td>
+               </tr>
+            </table>
+         </div>   
+      </div>
+      <div class="col">
+         <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary rounded-circle">+</button>
+         </div>
+      </div>
+      
+   </div>
+</body>
+
+
+
+
+
+
+</html>

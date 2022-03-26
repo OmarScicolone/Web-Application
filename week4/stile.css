@@ -1,0 +1,7 @@
+body{
+   background-color: blue;
+}
+
+.titolo {   /* il punto perchè stiamo indicando il nome di una classe */
+   color: green;
+}
