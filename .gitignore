@@ -6,3 +6,4 @@ Workspace - AW1.code-workspace
 week3/sqlite3/node_modules
 week3/sqlite3/package-lock.json
 week3/sqlite3/package.json
+.vscode
