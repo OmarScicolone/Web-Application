@@ -1,15 +1,14 @@
-import { Container, Button, Form, FormControl, Col, Navbar, Nav } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
-function MySideBar() {
+function MySideBar(props) {
    return (
-      <Nav variant="pills" defaultActiveKey="/home" className="flex-column">
-         <Nav.Link href="/home">All</Nav.Link>
-         <Nav.Link eventKey="link-1">Favourites</Nav.Link>
-         <Nav.Link eventKey="link-2">Best Rated</Nav.Link>
-         <Nav.Link eventKey="link-3">Seen Last Month</Nav.Link>
-         <Nav.Link eventKey="link-4">Unseen</Nav.Link>
+      <Nav variant="pills" defaultActiveKey="link-0" className="flex-column">
+         <Nav.Link eventKey="link-0" onClick={()=> props.setNewFilter("All")} >All</Nav.Link>
+         <Nav.Link eventKey="link-1" onClick={()=> props.setNewFilter("Favorites")} >Favorites</Nav.Link>
+         <Nav.Link eventKey="link-2" onClick={()=> props.setNewFilter("Best Rated")} >Best Rated</Nav.Link>
+         <Nav.Link eventKey="link-3" onClick={()=> props.setNewFilter("Seen Last Month")} >Seen Last Month</Nav.Link>
+         <Nav.Link eventKey="link-4" onClick={()=> props.setNewFilter("Unseen")} >Unseen</Nav.Link>
       </Nav>
-
    )
 }
 
