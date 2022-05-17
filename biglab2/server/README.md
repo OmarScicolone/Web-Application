@@ -1,0 +1,5 @@
+[HTTP Method] [URL, optionally with parameter(s)]
+[One-line about what this API is doing]
+[Sample request, with body (if any)]
+[Sample response, with body (if any)]
+[Error response(s), if any]

@@ -6,4 +6,9 @@ Workspace - AW1.code-workspace
 week3/sqlite3/node_modules
 week3/sqlite3/package-lock.json
 week3/sqlite3/package.json
+week6/first-react/package-lock.json
+week6/first-react/package.json
+biglab1/package-lock.json
+biglab1/package.json
 .vscode
+node_modules
