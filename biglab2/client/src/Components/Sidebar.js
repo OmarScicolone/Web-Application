@@ -1,6 +1,5 @@
 import { Nav } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-
 function MySideBar(props) {
   const navigate = useNavigate();
   const { activeFilter } = useParams();
@@ -16,9 +15,10 @@ function MySideBar(props) {
           key={index}
           eventKey={index}
           className="bg-primary"
-          onClick={() =>
-            /*navigation(currentFilter)*/ navigate(`/filter/${currentFilter}`)
-          }
+          onClick={() => {
+            props.setFilter(currentFilter);
+            navigate(`/filter/${currentFilter}`);
+          }}
         >
           <span className="text-light">{item}</span>
         </Nav.Link>
@@ -28,7 +28,10 @@ function MySideBar(props) {
         <Nav.Link
           key={index}
           eventKey={index}
-          onClick={() => navigate(`/filter/${item}`)}
+          onClick={() => {
+            props.setFilter(item);
+            navigate(`/filter/${item}`);
+          }}
         >
           <span className="text-dark">{item}</span>
         </Nav.Link>

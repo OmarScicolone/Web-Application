@@ -1,12 +1,21 @@
 import { Table, Button, Form, Container, Col, Row } from "react-bootstrap";
 import MyNavBar from "./Navbar.js";
 import MySideBar from "./Sidebar.js";
-import dayjs from "dayjs";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import API from "../API";
 
 function MyTable(props) {
+  const { setFilms } = props;
   const { activeFilter } = useParams();
+  const [filter, setFilter] = useState(activeFilter ? activeFilter : "All");
+
+  useEffect(() => {
+    API.getFilteredFilms(filter)
+      .then((films) => setFilms(films))
+      .catch((err) => console.log(err));
+  }, [filter, setFilms]);
 
   return (
     <>
@@ -14,7 +23,7 @@ function MyTable(props) {
       <Container fluid>
         <Row>
           <Col xs={3} className="bg-light">
-            <MySideBar />
+            <MySideBar setFilter={setFilter}></MySideBar>
           </Col>
 
           <Col xs={9}>
@@ -39,29 +48,18 @@ function MyTable(props) {
 
 function FilmTable(props) {
   const navigate = useNavigate();
-  const { activeFilter } = useParams();
 
   function modifyPreference(id) {
     props.setFilms((oldFilms) => {
       const list = oldFilms.map((fi) => {
         if (fi.id === id) {
-          if (fi.favorite === false) {
-            return {
-              id: fi.id,
-              favorite: true,
-              name: fi.name,
-              date: fi.date,
-              rating: fi.rating,
-            };
-          } else {
-            return {
-              id: fi.id,
-              favorite: false,
-              name: fi.name,
-              date: fi.date,
-              rating: fi.rating,
-            };
-          }
+          return {
+            id: fi.id,
+            favorite: !fi.favorite,
+            title: fi.title,
+            date: fi.date,
+            rating: fi.rating,
+          };
         } else {
           return fi;
         }
@@ -77,7 +75,7 @@ function FilmTable(props) {
           return {
             id: fi.id,
             favorite: fi.favorite,
-            name: fi.name,
+            title: fi.title,
             date: fi.date,
             rating: newRating,
           };
@@ -89,36 +87,11 @@ function FilmTable(props) {
     });
   }
 
-  let filteredFilms = [];
-  let currentFilter = activeFilter ? activeFilter.replace("%20", " ") : "All";
-  switch (currentFilter) {
-    case "All":
-      filteredFilms = props.films;
-      break;
-    case "Favorites":
-      filteredFilms = props.films.filter((film) => film.favorite !== false);
-      break;
-    case "Best Rated":
-      filteredFilms = props.films.filter((film) => film.rating === 5);
-      break;
-    case "Seen Last Month":
-      filteredFilms = props.films.filter(
-        (film) =>
-          film.date !== undefined && dayjs().diff(film.date, "day") <= 30
-      );
-      break;
-    case "Unseen":
-      filteredFilms = props.films.filter((film) => film.date === undefined);
-      break;
-    default:
-      filteredFilms = props.films;
-  }
-
   return (
     <>
       <Table>
         <tbody>
-          {filteredFilms.map((f) => (
+          {props.films.map((f) => (
             <FilmRow
               key={f.id}
               film={f}
@@ -163,9 +136,9 @@ function FilmData(props) {
   return (
     <>
       {props.film.favorite ? (
-        <td style={{ color: "red" }}>{props.film.name}</td>
+        <td style={{ color: "red" }}>{props.film.title}</td>
       ) : (
-        <td>{props.film.name}</td>
+        <td>{props.film.title}</td>
       )}
 
       <td>
@@ -175,7 +148,10 @@ function FilmData(props) {
               type="checkbox"
               label="Favorite"
               defaultChecked={props.film.favorite}
-              onChange={() => props.modifyPreference(props.film.id)}
+              onChange={() => {
+                props.modifyPreference(props.film.id);
+                API.updateFilm_favorite(props.film.id, props.film.favorite);
+              }}
             />
           </Form.Group>
         </Form>
@@ -192,13 +168,19 @@ function FilmData(props) {
             <i
               key={index}
               className="bi bi-star-fill"
-              onClick={() => props.modifyRating(props.film.id, index + 1)}
+              onClick={() => {
+                API.updateFilm_rating(props.film.id, index + 1);
+                props.modifyRating(props.film.id, index + 1);
+              }}
             ></i>
           ) : (
             <i
               key={index}
               className="bi bi-star"
-              onClick={() => props.modifyRating(props.film.id, index + 1)}
+              onClick={() => {
+                API.updateFilm_rating(props.film.id, index + 1);
+                props.modifyRating(props.film.id, index + 1);
+              }}
             ></i>
           )
         )}
@@ -215,6 +197,7 @@ function FilmActions(props) {
         <Button
           variant="danger"
           onClick={() => {
+            API.deleteFilm(props.id);
             props.deleteFilm(props.id);
           }}
         >

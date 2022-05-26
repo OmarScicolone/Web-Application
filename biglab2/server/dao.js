@@ -1,3 +1,5 @@
+"use strict";
+
 const sqlite = require("sqlite3");
 const db = new sqlite.Database("films.db", (err) => {
   if (err) throw err;
@@ -65,17 +67,10 @@ exports.addFilm = (film) => {
 exports.updateFilm_byID = (film) => {
   return new Promise((resolve, reject) => {
     const sql =
-      "UPDATE films SET title = ?, favorite = ?, watchdate = ?, rating = ?, user = ? WHERE id=?";
+      "UPDATE films SET title = ?, favorite = ?, watchdate = ?, rating = ? WHERE id=?";
     db.all(
       sql,
-      [
-        film.title,
-        film.favorite,
-        film.watchdate,
-        film.rating,
-        film.user,
-        film.id,
-      ],
+      [film.title, film.favorite, film.watchdate, film.rating, film.id],
       (err, rows) => {
         if (err) {
           reject(err);
@@ -91,6 +86,19 @@ exports.updateFavorite_byID = (film) => {
   return new Promise((resolve, reject) => {
     const sql = "UPDATE films SET favorite = ? WHERE id=?";
     db.all(sql, [film.favorite, film.id], (err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(null);
+    });
+  });
+};
+
+exports.updateRating_byID = (film) => {
+  return new Promise((resolve, reject) => {
+    const sql = "UPDATE films SET rating = ? WHERE id=?";
+    db.all(sql, [film.rating, film.id], (err) => {
       if (err) {
         reject(err);
         return;

@@ -1,11 +1,16 @@
 "use strict";
+const dayjs = require("dayjs");
+
 const express = require("express");
-const { check, validationResult, param } = require("express-validator");
+const { check, validationResult, param, body } = require("express-validator");
+const cors = require("cors");
+const dao = require("./dao");
 
 const app = new express();
 const PORT = 3001;
+
 app.use(express.json());
-const dao = require("./dao");
+app.use(cors());
 
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}/`)
@@ -65,19 +70,20 @@ app.get(
           break;
         case "favorites":
           filteredFilms = film.filter((film) => film.favorite != 0);
-          console.log(filteredFilms);
           break;
         case "best rated":
           filteredFilms = film.filter((film) => film.rating === 5);
           break;
+
         case "seen last month":
           filteredFilms = film.filter(
             (film) =>
-              film.date !== undefined && dayjs().diff(film.date, "day") <= 30
+              film.watchdate != undefined &&
+              dayjs().diff(film.watchdate, "day") <= 30
           );
           break;
         case "unseen":
-          filteredFilms = film.filter((film) => film.date === undefined);
+          filteredFilms = film.filter((film) => film.watchdate == undefined);
           break;
         default:
           filteredFilms = film;
@@ -92,13 +98,22 @@ app.get(
 
 //POST - Create a new film, by providing all relevant information – except the “id” that will be automatically assigned by the back-end.
 app.post(
-  "/api/films",
+  "/api/add",
   [
     check("title").isString().notEmpty(),
     check("favorite").isBoolean(),
     check("user").isInt(),
+    check("watchdate")
+      .if(body("watchdate").exists())
+      .isDate({ format: "YYYY-MM-DD", strictMode: true }),
   ],
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      res.status(422).json({
+        errors: errors.array(),
+      });
+
     const film = {
       title: req.body.title,
       favorite: req.body.favorite,
@@ -121,10 +136,10 @@ app.post(
 app.put(
   "/api/films/:id",
   [
-    check("id").isInt(),
-    check("newTitle").isString(),
-    check("newFavorite").isBoolean(),
-    check("newUser").isInt(),
+    //check("id").isInt(),
+    //check("newTitle").isString(),
+    //check("newFavorite").isBoolean(),
+    //check("newUser").isInt(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -135,11 +150,10 @@ app.put(
 
     const film = {
       id: req.params.id,
-      title: req.body.newTitle,
-      favorite: req.body.newFavorite,
-      watchdate: req.body.newWatchdate,
-      rating: req.body.newRating,
-      user: req.body.newUser,
+      title: req.body.title,
+      favorite: req.body.favorite,
+      watchdate: req.body.date,
+      rating: req.body.rating,
     };
     try {
       await dao.updateFilm_byID(film);
@@ -153,8 +167,8 @@ app.put(
 
 //PUT - Mark an existing film as favorite/unfavorite.
 app.put(
-  "/api/films/:id/:fav",
-  [check("id").isInt(), check("fav").isBoolean()],
+  "/api/films/:id/:favorite",
+  [check("id").isInt(), check("favorite").isBoolean()],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
@@ -164,10 +178,35 @@ app.put(
 
     const film = {
       id: req.params.id,
-      favorite: req.params.fav,
+      favorite: req.params.favorite,
     };
     try {
       await dao.updateFavorite_byID(film);
+      res.status(201).end();
+    } catch (err) {
+      console.log(err);
+      res.status(500).end();
+    }
+  }
+);
+
+// PUT - update star
+app.put(
+  "/api/films/:id/rating/:rating",
+  [check("id").isInt(), check("rating").isInt()],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      res.status(422).json({
+        errors: errors.array(),
+      });
+
+    const film = {
+      id: req.params.id,
+      rating: req.params.rating,
+    };
+    try {
+      await dao.updateRating_byID(film);
       res.status(201).end();
     } catch (err) {
       console.log(err);
