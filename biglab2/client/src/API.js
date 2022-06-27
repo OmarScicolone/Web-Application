@@ -1,12 +1,34 @@
 const dayjs = require("dayjs");
 const fixedURL = new URL("http://localhost:3001/api/");
 
+async function getAllFilm() {
+  // call: GET /api/films
+  const response = await fetch(new URL("films", fixedURL), {
+    credentials: "include",
+  });
+  const filmJson = await response.json();
+  if (response.ok) {
+    return filmJson.map((fi) => ({
+      id: fi.id,
+      title: fi.title,
+      favorite: fi.favorite,
+      date: fi.watchdate ? dayjs(fi.watchdate) : undefined,
+      rating: fi.rating,
+      user: fi.user,
+    }));
+  } else {
+    throw filmJson; // an object with the error coming from the server
+  }
+}
+
 async function getFilteredFilms(filter) {
   //async perchè c'è la await
   // call  /api/exams
 
   filter = filter.toLowerCase();
-  const response = await fetch(fixedURL + `films/filter/${filter}`); //dalla fetch esce sempre un oggetto tipo Response, in questo caso lo abbiamo chiamato response
+  const response = await fetch(fixedURL + `films/filter/${filter}`, {
+    credentials: "include",
+  }); //dalla fetch esce sempre un oggetto tipo Response, in questo caso lo abbiamo chiamato response
   const filmsJson = await response.json(); // await perchè .json() torna una promise, dobbiamo aspettare che sia processata
   if (response.ok) {
     return filmsJson.map((fi) => ({
@@ -27,6 +49,7 @@ function deleteFilm(id) {
   return new Promise((resolve, reject) => {
     fetch(new URL("films/" + id, fixedURL), {
       method: "DELETE",
+      credentials: "include",
     })
       .then((response) => {
         if (response.ok) {
@@ -54,6 +77,7 @@ function addFilm(film) {
   return new Promise((resolve, reject) => {
     fetch(new URL("add", fixedURL), {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -63,7 +87,7 @@ function addFilm(film) {
         favorite: film.favorite,
         watchdate: film.date ? film.date.format("YYYY-MM-DD") : undefined,
         rating: film.rating,
-        user: 1,
+        user: film.user,
       }),
     })
       .then((response) => {
@@ -92,6 +116,7 @@ function updateFilm(film) {
   return new Promise((resolve, reject) => {
     fetch(new URL("films/" + film.id, fixedURL), {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -130,6 +155,7 @@ function updateFilm_favorite(filmID, favorite) {
     favorite = favorite ? 0 : 1;
     fetch(new URL("films/" + filmID + "/" + favorite, fixedURL), {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -160,6 +186,7 @@ function updateFilm_rating(filmID, rating) {
   return new Promise((resolve, reject) => {
     fetch(new URL("films/" + filmID + "/rating/" + rating, fixedURL), {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -189,6 +216,43 @@ function updateFilm_rating(filmID, rating) {
   });
 }
 
+async function logIn(credentials) {
+  let response = await fetch(new URL("sessions", fixedURL), {
+    method: "POST",
+    credentials: "include", //lo mettiamo ovunque (per cors)
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+  if (response.ok) {
+    const user = await response.json();
+    return user;
+  } else {
+    const errDetail = await response.json();
+    throw errDetail.message;
+  }
+}
+
+async function logOut() {
+  await fetch(new URL("sessions/current", fixedURL), {
+    method: "DELETE",
+    credentials: "include",
+  });
+}
+
+async function getUserInfo() {
+  const response = await fetch(new URL("sessions/current", fixedURL), {
+    credentials: "include",
+  });
+  const userInfo = await response.json();
+  if (response.ok) {
+    return userInfo;
+  } else {
+    throw userInfo; // an object with the error coming from the server
+  }
+}
+
 const API = {
   getFilteredFilms,
   deleteFilm,
@@ -196,5 +260,9 @@ const API = {
   updateFilm,
   updateFilm_rating,
   updateFilm_favorite,
+  logIn,
+  logOut,
+  getUserInfo,
+  getAllFilm,
 };
 export default API;

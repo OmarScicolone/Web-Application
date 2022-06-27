@@ -48,6 +48,7 @@ function FilmForm(props) {
       console.log(newFilm);
       if (filmToEdit) API.updateFilm(newFilm);
       else API.addFilm(newFilm);
+
       props.addFilm(newFilm);
       navigate("/"); //torniamo alla home
     }

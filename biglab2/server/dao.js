@@ -6,10 +6,11 @@ const db = new sqlite.Database("films.db", (err) => {
 });
 
 // get all films
-exports.getFilms = () => {
+exports.getFilms = (userId) => {
   return new Promise((resolve, reject) => {
-    const sql = "SELECT id, title, favorite, watchdate, rating FROM films";
-    db.all(sql, [], (err, rows) => {
+    const sql =
+      "SELECT id, title, favorite, watchdate, rating FROM films WHERE user=?";
+    db.all(sql, [userId], (err, rows) => {
       if (err) {
         reject(err);
         return;
